@@ -7,14 +7,14 @@ import pyfmax.fmax as fm
 import numpy as np
 
 #Load the file as a 1D array
-clustering=np.loadtxt("data/exemple_isko/clustering_isko")
+clustering=np.loadtxt("data/exemple/clustering")
 labels_col=[]
 #Read the labels of columns (features)
-labels=open("data/exemple_isko/label_isko")
+labels=open("data/exemple/label")
 for ligne in labels:
 	labels_col.append(ligne.strip())
 #Load the file as a 2D array
-matrix=np.loadtxt("data/exemple_isko/matrix_isko")
+matrix=np.loadtxt("data/exemple/matrix")
 
 #Create a MatrixClustered object using fm namespace which refers to fmax.py in package pyfmax
 obj=fm.MatrixClustered(matrix, clustering,labels_col=labels_col)
