@@ -51,3 +51,4 @@ print "\n"
 print "Contrasted matrix after feature selection",obj.contrast_and_select_matrix()
 print "\n"
 print "PC Value :",obj.get_PC()
+print "EC Value :",obj.get_EC()

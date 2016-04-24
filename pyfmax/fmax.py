@@ -248,7 +248,31 @@ class MatrixClustered:
 				contrast=self.contrast(j, k)
 				if contrast > 1:
 					pc+= 1.0 / self.get_size_cluster(k) * contrast
-		return 1.0/ self.get_clusters_number() * pc			
+		return 1.0/ self.get_clusters_number() * pc
+	
+	def get_EC(self):
+		'''
+		Return Extended Contrast (EC) index which is a clustering quality index using contrast
+		This quality index gives better results than PC when dealing with high dimensional data
+		'''
+		ec=0.0
+		for k in range(self.get_clusters_number()):
+			positive_contrast_k=0.0
+			negative_contrast_k=0.0
+			nb_pos=0
+			nb_neg=0
+			for j in range(self.get_cols_number()):
+				contrast=self.contrast(j, k)
+				if contrast > 1:
+					nb_pos+=1
+					positive_contrast_k+= 1.0 / self.get_size_cluster(k) * contrast
+				else:
+					nb_neg+=1
+					negative_contrast_k+= 1.0 / (self.get_size_cluster(k) * contrast)
+			positive_contrast_k*=nb_pos
+			negative_contrast_k*=nb_neg
+			ec+=(positive_contrast_k+negative_contrast_k)/(nb_pos+nb_neg)
+		return 1.0/ self.get_clusters_number() * ec			
 
 	def __str__(self):
 		"""
