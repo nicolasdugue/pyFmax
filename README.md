@@ -17,7 +17,7 @@ This example makes use of data stored in data/exemple that are extracted from **
 
 **[1]** Jean-Charles Lamirel, Nicolas Dugué, Pascal Cuxac. 
 New efficient clustering quality indexes. 
-In Neural Networks (IJCNN), The 2011 Inter- national Joint Conference on IEEE, 2016.
+In Neural Networks (IJCNN), The 2016 Inter- national Joint Conference on IEEE, 2016.
 
 **[2]** Nicolas Dugué, Ali Tebbakh, Pascal Cuxac, Jean-Charles Lamirel. 
 Feature selection and complex networks methods for an analysis of collaboration evolution in science: an application to the ISTEX digital library. 
