@@ -18,34 +18,36 @@ matrix=np.loadtxt("data/exemple_isko/matrix_isko")
 
 #Create a MatrixClustered object using fm namespace which refers to fmax.py in package pyfmax
 obj=fm.MatrixClustered(matrix, clustering,labels_col=labels_col)
-print obj
-
-print obj.ff(0, 0)
-print obj.ff(0, 1)
-print obj.ff(1, 0)
-print obj.ff(1, 1)
-print obj.ff(2,0)
-print obj.ff(2,1)
-
-print obj.ff_mean(0)
-print obj.ff_mean(1)
-print obj.ff_mean(2)
-print obj.ff_mean_all()
 
 
-print obj.contrast(0, 0)
-print obj.contrast(0, 1)
-print obj.contrast(1, 0)
-print obj.contrast(1, 1)
-print obj.contrast(2,0)
-print obj.contrast(2,1)
+print "Feature F-Measure for feature 0, cluster 0 :", obj.ff(0, 0)
+print "Feature F-Measure for feature 0, cluster 1 :",obj.ff(0, 1)
+print "Feature F-Measure for feature 1, cluster 0 :",obj.ff(1, 0)
+print "Feature F-Measure for feature 1, cluster 1 :",obj.ff(1, 1)
+print "Feature F-Measure for feature 2, cluster 0 :",obj.ff(2,0)
+print "Feature F-Measure for feature 2, cluster 1 :",obj.ff(2,1)
+print "\n"
+print "Mean Feature F-Measure for feature 0 :",obj.ff_mean(0)
+print "Mean Feature F-Measure for feature 1 :",obj.ff_mean(1)
+print "Mean Feature F-Measure for feature 2 :",obj.ff_mean(2)
+print "Mean Feature F-Measure for all features:",obj.ff_mean_all()
+print "\n"
 
+print "Contrast for feature 0, cluster 0 :",obj.contrast(0, 0)
+print "Contrast for feature 0, cluster 1 :",obj.contrast(0, 1)
+print "Contrast for feature 1, cluster 0 :",obj.contrast(1, 0)
+print "Contrast for feature 1, cluster 1 :",obj.contrast(1, 1)
+print "Contrast for feature 2, cluster 0 :",obj.contrast(2,0)
+print "Contrast for feature 2, cluster 1 :",obj.contrast(2,1)
+print "\n"
 
 for idx, list_features in enumerate(obj.get_features_selected()):
-	print "cluster ", idx
+	print "Feature selected for cluster ", idx
 	for f in list_features:
 		print obj.get_col_label(f)
 		
-print obj.get_features_selected_flat()
-
-print obj.contrast_and_select_matrix()
+print "Features selected for the whole data :",obj.get_features_selected_flat()
+print "\n"
+print "Contrasted matrix after feature selection",obj.contrast_and_select_matrix()
+print "\n"
+print "PC Value :",obj.get_PC()

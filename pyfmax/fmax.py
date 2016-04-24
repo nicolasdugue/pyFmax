@@ -4,6 +4,7 @@
 from scipy.sparse import csr_matrix, csc_matrix
 import numpy as np
 from math import pow
+from PIL.ImageEnhance import Contrast
 
 class MatrixClustered:
 	"""
@@ -199,6 +200,12 @@ class MatrixClustered:
     	"""
 		return self.matrix_csr.shape[1]
 	
+	def get_cluster(self, k):
+		return self.clusters[k]
+	
+	def get_size_cluster(self, k):
+		return len(self.get_cluster(k))
+	
 	def get_clusters_number(self):
 		"""
 		Get the number of cols
@@ -230,6 +237,18 @@ class MatrixClustered:
 		for i in range(self.get_rows_number()):
 			matrix.append(self.contrast_and_select_features(self.matrix_csr.getrow(i).toarray()[0], self.get_cluster_of(i), magnitude))
 		return matrix
+	
+	def get_PC(self):
+		'''
+		Return Positive Contrast (PC) index which is a clustering quality index using contrast
+		'''
+		pc=0.0
+		for j in range(self.get_cols_number()):
+			for k in range(self.get_clusters_number()):
+				contrast=self.contrast(j, k)
+				if contrast > 1:
+					pc+= 1.0 / self.get_size_cluster(k) * contrast
+		return 1.0/ self.get_clusters_number() * pc			
 
 	def __str__(self):
 		"""
