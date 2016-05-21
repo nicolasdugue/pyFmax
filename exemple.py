@@ -50,5 +50,8 @@ print "Features selected for the whole data :",obj.get_features_selected_flat()
 print "\n"
 print "Contrasted matrix after feature selection",obj.contrast_and_select_matrix()
 print "\n"
+#Should print 0.609...
 print "PC Value :",obj.get_PC()
+#Should print 0.695
+#Ask JC if just feature selected used ?
 print "EC Value :",obj.get_EC()

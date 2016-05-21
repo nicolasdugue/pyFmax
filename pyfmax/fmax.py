@@ -271,6 +271,7 @@ class MatrixClustered:
 					negative_contrast_k+= 1.0 / (self.get_size_cluster(k) * contrast)
 			positive_contrast_k*=nb_pos
 			negative_contrast_k*=nb_neg
+			print "CLuster",k,"Nb pos", nb_pos, "Nb neg", nb_neg, "val", (positive_contrast_k+negative_contrast_k)/(nb_pos+nb_neg)
 			ec+=(positive_contrast_k+negative_contrast_k)/(nb_pos+nb_neg)
 		return 1.0/ self.get_clusters_number() * ec			
 
