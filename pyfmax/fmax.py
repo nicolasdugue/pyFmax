@@ -243,12 +243,15 @@ class MatrixClustered:
 		Return Positive Contrast (PC) index which is a clustering quality index using contrast
 		'''
 		pc=0.0
-		for j in range(self.get_cols_number()):
-			for k in range(self.get_clusters_number()):
+		
+		for k in range(self.get_clusters_number()):
+			set_of_f= self.get_features_selected()[k] #range(self.get_cols_number())
+			#print(str(k) + " " + str(set_of_f))
+			for j in set_of_f:
 				contrast=self.contrast(j, k)
 				if contrast > 1:
 					pc+= 1.0 / self.get_size_cluster(k) * contrast
-		return 1.0/ self.get_clusters_number() * pc
+		return pc / self.get_clusters_number()
 	
 	def get_EC(self):
 		'''
@@ -261,11 +264,12 @@ class MatrixClustered:
 			negative_contrast_k=0.0
 			nb_pos=0
 			nb_neg=0
-			for j in range(self.get_cols_number()):
+			set_of_f=self.get_features_selected_flat() #range(self.get_cols_number()):
+			for j in set_of_f:
 				contrast=self.contrast(j, k)
 				if contrast > 1:
 					nb_pos+=1
-					positive_contrast_k+= 1.0 / self.get_size_cluster(k) * contrast
+					positive_contrast_k+= float(contrast) / self.get_size_cluster(k) 
 				else:
 					nb_neg+=1
 					negative_contrast_k+= 1.0 / (self.get_size_cluster(k) * contrast)
