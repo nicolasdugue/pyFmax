@@ -51,7 +51,9 @@ print "\n"
 print "Contrasted matrix after feature selection",obj.contrast_and_select_matrix()
 print "\n"
 #Should print 0.609...
-print "PC Value :",obj.get_PC()
+print "mPC :",obj.get_macro_PC()
+print "aPC :",obj.get_avg_PC()
 #Should print 0.695
 #Ask JC if just feature selected used ?
-print "EC Value :",obj.get_EC()
+print "mEC :",obj.get_macro_EC()
+print "aEC :",obj.get_avg_EC()

@@ -238,9 +238,10 @@ class MatrixClustered:
 			matrix.append(self.contrast_and_select_features(self.matrix_csr.getrow(i).toarray()[0], self.get_cluster_of(i), magnitude))
 		return matrix
 	
-	def get_PC(self):
+	def get_macro_PC(self):
 		'''
-		Return Positive Contrast (PC) index which is a clustering quality index using contrast
+		Return macro Positive Contrast (PC) index which is a clustering quality index using contrast
+		which is the mean across all clusters of the positive contrast values divided by the cluster size
 		'''
 		pc=0.0
 		
@@ -252,10 +253,26 @@ class MatrixClustered:
 				if contrast > 1:
 					pc+= 1.0 / self.get_size_cluster(k) * contrast
 		return pc / self.get_clusters_number()
-	
-	def get_EC(self):
+
+	def get_avg_PC(self):
 		'''
-		Return Extended Contrast (EC) index which is a clustering quality index using contrast
+		Return Positive Contrast (PCm) index which is a clustering quality index using contrast
+		which is the mean across all clusters of the average positive contrast in the cluster
+		'''
+		pc=0.0
+		
+		for k in range(self.get_clusters_number()):
+			set_of_f= self.get_features_selected()[k] #range(self.get_cols_number())
+			#print(str(k) + " " + str(set_of_f))
+			for j in set_of_f:
+				contrast=self.contrast(j, k)
+				if contrast > 1:
+					pc+= 1.0 / len(self.get_features_selected()[k]) * contrast
+		return pc / self.get_clusters_number()
+	
+	def get_macro_EC(self):
+		'''
+		Return macro Extended Contrast (EC) index which is a clustering quality index using contrast
 		This quality index gives better results than PC when dealing with high dimensional data
 		'''
 		ec=0.0
@@ -275,9 +292,42 @@ class MatrixClustered:
 					negative_contrast_k+= 1.0 / (self.get_size_cluster(k) * contrast)
 			positive_contrast_k*=nb_pos
 			negative_contrast_k*=nb_neg
-			print "CLuster",k,"Nb pos", nb_pos, "Nb neg", nb_neg, "val", (positive_contrast_k+negative_contrast_k)/(nb_pos+nb_neg)
 			ec+=(positive_contrast_k+negative_contrast_k)/(nb_pos+nb_neg)
-		return 1.0/ self.get_clusters_number() * ec			
+		return 1.0/ self.get_clusters_number() * ec		
+
+
+	def get_avg_EC(self):
+		'''
+		Return the average Extended Contrast (EC) index which is a clustering quality index using contrast
+		This quality index gives better results than PC when dealing with high dimensional data
+		'''
+		nb_pos=0
+		nb_neg=0
+		vPsum=0.0
+		vNsum=0.0
+		for k in range(self.get_clusters_number()):
+			positive_contrast_k=0.0
+			negative_contrast_k=0.0
+			set_of_f=self.get_features_selected_flat() #range(self.get_cols_number()):
+			for j in set_of_f:
+				contrast=self.contrast(j, k)
+				if contrast > 1:
+					nb_pos+=1
+					positive_contrast_k+= float(contrast) 
+				else:
+					nb_neg+=1
+					negative_contrast_k+= 1.0 / contrast
+			positive_contrast_k/=len(self.get_features_selected()[k])
+			negative_contrast_k/=len(self.get_features_selected()[k])
+			vPsum+=positive_contrast_k
+			vNsum+=negative_contrast_k
+		vPsum/=self.get_clusters_number()
+		vNsum/=self.get_clusters_number()
+		if (self.get_clusters_number() <= 5):
+			ec=(vPsum*nb_pos+  (1-1.0/(self.get_clusters_number()))*vNsum*nb_neg)/(nb_pos+nb_neg)
+		else:
+			ec=(vPsum*nb_pos+vNsum*nb_neg)/(nb_pos+nb_neg)
+		return ec			
 
 	def __str__(self):
 		"""
