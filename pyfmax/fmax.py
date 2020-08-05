@@ -266,7 +266,7 @@ class MatrixClustered:
 			#print(str(k) + " " + str(set_of_f))
 			for j in set_of_f:
 				contrast=self.contrast(j, k)
-				if contrast > 1:
+				if contrast > 1 and self.get_features_selected()[k] > 0:
 					pc+= 1.0 / len(self.get_features_selected()[k]) * contrast
 		return pc / self.get_clusters_number()
 	
@@ -317,8 +317,9 @@ class MatrixClustered:
 				else:
 					nb_neg+=1
 					negative_contrast_k+= 1.0 / contrast
-			positive_contrast_k/=len(self.get_features_selected()[k])
-			negative_contrast_k/=len(self.get_features_selected()[k])
+			if self.get_features_selected()[k] > 0:
+				positive_contrast_k/=len(self.get_features_selected()[k])
+				negative_contrast_k/=len(self.get_features_selected()[k])
 			vPsum+=positive_contrast_k
 			vNsum+=negative_contrast_k
 		vPsum/=self.get_clusters_number()
